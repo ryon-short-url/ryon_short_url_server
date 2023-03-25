@@ -1,7 +1,7 @@
 {
-  "name": "create_exercise_service",
+  "name": "ryon",
   "version": "1.0.0",
-  "description": "create_exercise_service",
+  "description": "ryon_short_url_server",
   "main": "server.js",
   "scripts": {
     "start": "node app.js"
@@ -9,6 +9,7 @@
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.20",
     "axios": "^0.24.0",
+    "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "bunnycdn-storage": "^1.0.4",
     "bunnycdn-storage-api-node-sdk": "^1.0.3",
@@ -19,7 +20,9 @@
     "fluent-ffmpeg": "^2.1.2",
     "mongodb": "^4.2.1",
     "multer": "^1.4.3",
-    "read-excel-file": "^5.2.25"
+    "read-excel-file": "^5.2.25",
+    "sqlite3": "^5.1.6",
+    "string-hash": "^1.1.3"
   },
   "author": "kumi.edu",
   "license": "MIT"
