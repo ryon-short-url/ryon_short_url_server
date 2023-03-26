@@ -4,9 +4,10 @@ const { MongoClient } = require('mongodb');
 var ObjectId = require('mongodb').ObjectId;
 var crypto = require('crypto');
 var DumbMap = require('./untils/DumbMap.js');
-const Promise = require('bluebird')
-const AppDAO = require('./repository/dao')
-const VerificationCodeRepository = require('./repository/verification_code_repository')
+const Promise = require('bluebird');
+const AppDAO = require('./repository/dao');
+const VerificationCodeRepository = require('./repository/verification_code_repository');
+const cron = require("node-cron");
 
 const MONGODB_URI = 'mongodb+srv://ryonlink:DMtpq8nsbfU1tXdt@ryon01.kswslff.mongodb.net/?retryWrites=true&w=majority';
 app.use(express.json());
@@ -107,7 +108,6 @@ app.post('/get', async function (req, res) {
 
 //dynamic get url
 app.get('/:shortId', async function (req, res) {
-  // res.send(req.params.shortId);
   var originalUrl = await getShortUrl(req.params.shortId);
   console.log(originalUrl);
   res.send(originalUrl.originalUrl);
@@ -154,30 +154,66 @@ app.post('/create/test', async (request, response) => {
     }
   });
 });
+/////////////////test-end/////////////////
 
 app.post('/create/vcode', async function (req, res) {
   var vcode = makeRandomId(6);
-  console.time('get time')
   verificationCodeRepo.create(vcode).then(() => {
     res.json(vcode);
   });
-  console.timeEnd('get time');
-
 });
 
 app.post('/validate/vcode', async function (req, res) {
   verificationCodeRepo.getById(req.body.vcode).then((result) => {
-    res.json(result.count);//return 1 where true
+    if (result.count != 1) {
+      res.json('false');//return 1 where true
+    } else {
+      verificationCodeRepo.delete(req.body.vcode);
+      res.json('true');//return 1 where true
+    }
+
   });
 });
-
-/////////////////test-end/////////////////
+/////////////////////////////////////////////////////////////////////////
+//┌────────────── second (0 - 59) (optional)
+//│ ┌──────────── minute (0 - 59) 
+//│ │ ┌────────── hour (0 - 23)
+//│ │ │ ┌──────── day of the month (1 - 31)
+//│ │ │ │ ┌────── month (1 - 12)
+//│ │ │ │ │ ┌──── day of the week (0 - 6) (0 and 7 both represent Sunday)
+//│ │ │ │ │ │
+//│ │ │ │ │ │
+//* * * * * * 
+/////////////////////////////////////////////////////////////////////////
+//clear vcode
+cron.schedule("*/1 * * * *", function () {
+  console.log("---------------------");
+  var date_ob = new Date();
+  var day = ("0" + date_ob.getDate()).slice(-2);
+  var month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+  var year = date_ob.getFullYear();
+  var hours = ("0" + date_ob.getHours()).slice(-2);
+  var minutes = ("0" + (date_ob.getMinutes() - 1)).slice(-2);
+  var seconds = ("0" + date_ob.getSeconds()).slice(-2);
+  if (minutes == "-1") {
+    minutes = "59";
+    hours = hours - 1;
+  }
+  var dateTime = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+  verificationCodeRepo.deleteByDateTime(dateTime).then((result) => {
+    console.log(dateTime);
+    console.log(result);
+  });
+});
+//rebuilds database mỗi 12 tiếng
+cron.schedule("0 */12 * * *", function () {
+  verificationCodeRepo.rebuilds().then((result) => {
+    console.log(result.id);
+  });
+});
+///////////////////////////////////////////////////////////////////////////
 //run server
 const port = process.env.PORT || 3005;
 app.listen(port, () => {
-  // create table
-  // verificationCodeRepo.createTable().then(() => {
-  //   console.log('thanh cong')
-  // });
   console.log(`http://192.168.0.103:3005/`)
 });

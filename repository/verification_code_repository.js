@@ -18,16 +18,27 @@ class VerificationCodeRepository {
             'INSERT INTO verification_code (CODE) VALUES (?)',
             [code])
     }
-    delete(id) {
+    delete(code) {
         return this.dao.runquery(
-            `DELETE FROM projects WHERE id = ?`,
-            [id]
+            `DELETE FROM verification_code WHERE CODE = ?`,
+            [code]
+        )
+    }
+    deleteByDateTime(dateTime) {
+        return this.dao.runquery(
+            `DELETE FROM verification_code WHERE TIMESTAMP < ?`,
+            [dateTime]
         )
     }
     getById(code) {
         return this.dao.get(
             `SELECT count(*) as count FROM verification_code WHERE CODE = ?`,
             [code])
+    }
+
+    rebuilds() {
+        return this.dao.runquery(
+            `VACUUM`)
     }
 }
 
