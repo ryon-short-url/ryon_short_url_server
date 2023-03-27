@@ -5,10 +5,14 @@ module.exports = function (app) {
 	//	userHandlers = require('../controllers/userController.js');
 
 	// Urls Routes
+	app.route('/get')
+		.post(urlsController.get_url);
 	app.route('/create')
 		.post(urlsController.create_url);
 	app.route('/create/vcode')
 		.post(urlsController.create_url);
+	app.route('/validate/vcode')
+		.post(urlsController.validate_vcode);
 
 	// app.route('/tasks/:taskId')
 	// 	.get(todoList.read_a_task)

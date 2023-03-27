@@ -1,16 +1,25 @@
 'use strict';
 
-var untils = require("../../untils/untils");
+var utils = require("../../untils/utils");
 const { MongoClient } = require('mongodb');
 const MONGODB_URI = 'mongodb+srv://ryonlink:DMtpq8nsbfU1tXdt@ryon01.kswslff.mongodb.net/?retryWrites=true&w=majority';
 const client = new MongoClient(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-const VerificationCodeRepository = require('./repository/verification_code_repository');
-const dao = new AppDAO('./database/vc.sqlite3');
-const verificationCodeRepo = new VerificationCodeRepository(dao);
+// const VerificationCodeRepository = require('../../repository/verification_code_repository');
+// const AppDAO = require('../../repository/dao');
+// const dao = new AppDAO('./database/vc.sqlite3');
+// const verificationCodeRepo = new VerificationCodeRepository(dao);
+
+
+//Create validate code
+exports.get_url = async function (req, res) {
+    var originalUrl = await getShortUrl(req.body.shortId);
+    console.log(originalUrl);
+    res.send(originalUrl.originalUrl);
+};
 
 exports.create_url = async function (req, res) {
     var x = {
-        _id: untils.generateMd5(req.body.originalUrl),
+        _id: utils.generateMd5(req.body.originalUrl),
         originalUrl: req.body.originalUrl,
         userID: req.body.userID,
     };
@@ -40,20 +49,27 @@ exports.create_url = async function (req, res) {
     });
 };
 
+//Create validate code
 exports.create_vcode = async function (req, res) {
-    var vcode = untils.makeRandomId(6);
-    verificationCodeRepo.create(vcode).then(() => {
+    var vcode = utils.makeRandomId(6);
+    utils.verificationCodeRepo.create(vcode).then(() => {
         res.json(vcode);
     });
 };
+
 //Create validate code
-app.post('/create/vcode', async function (req, res) {
+exports.validate_vcode = async function (req, res) {
+    utils.verificationCodeRepo.getById(req.body.vcode).then((result) => {
+        if (result.count != 1) {
+            res.json('false');//return 1 where true
+        } else {
+            utils.verificationCodeRepo.delete(req.body.vcode);
+            res.json('true');//return 1 where true
+        }
+    });
+};
 
-});
-
-
-
-///////////////Fuction
+///////////////Fuction///////////////////////////////////////
 // create url
 const createShortUrl = async (url, callback) => {
     await client.connect();
@@ -71,29 +87,9 @@ const createShortUrl = async (url, callback) => {
     });
 }
 
-// exports.read_a_task = function (req, res) {
-//     Task.findById(req.params.taskId, function (err, task) {
-//         if (err)
-//             res.send(err);
-//         res.json(task);
-//     });
-// };
-
-// exports.update_a_task = function (req, res) {
-//     Task.findOneAndUpdate({ _id: req.params.taskId }, req.body, { new: true }, function (err, task) {
-//         if (err)
-//             res.send(err);
-//         res.json(task);
-//     });
-// };
-// // Task.remove({}).exec(function(){});
-// exports.delete_a_task = function (req, res) {
-
-//     Task.remove({
-//         _id: req.params.taskId
-//     }, function (err, task) {
-//         if (err)
-//             res.send(err);
-//         res.json({ message: 'Task successfully deleted' });
-//     });
-// };
+const getShortUrl = async (shortId) => {
+    await client.connect();
+    const collection = client.db("ryon01").collection("urls");
+    var url = collection.findOne({ "_id": shortId });
+    return url
+}
