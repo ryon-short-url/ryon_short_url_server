@@ -10,7 +10,7 @@ const client = new MongoClient(MONGODB_URI, { useNewUrlParser: true, useUnifiedT
 // const verificationCodeRepo = new VerificationCodeRepository(dao);
 
 
-//Create validate code
+//get validate code
 exports.get_url = async function (req, res) {
     var originalUrl = await getShortUrl(req.body.shortId);
     console.log(originalUrl);

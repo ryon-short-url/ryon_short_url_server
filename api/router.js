@@ -10,7 +10,7 @@ module.exports = function (app) {
 	app.route('/create')
 		.post(urlsController.create_url);
 	app.route('/create/vcode')
-		.post(urlsController.create_url);
+		.post(urlsController.create_vcode);
 	app.route('/validate/vcode')
 		.post(urlsController.validate_vcode);
 
