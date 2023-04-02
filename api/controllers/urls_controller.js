@@ -4,6 +4,14 @@ var utils = require("../../untils/utils");
 const { MongoClient } = require('mongodb');
 const MONGODB_URI = 'mongodb+srv://ryonlink:DMtpq8nsbfU1tXdt@ryon01.kswslff.mongodb.net/?retryWrites=true&w=majority';
 const client = new MongoClient(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+<<<<<<< HEAD:api/controllers/urls_controller.js
+=======
+// const VerificationCodeRepository = require('../../repository/verification_code_repository');
+// const AppDAO = require('../../repository/dao');
+// const dao = new AppDAO('./database/vc.sqlite3');
+// const verificationCodeRepo = new VerificationCodeRepository(dao);
+
+>>>>>>> d71e3847edf3b32ad5637e785842617514c87927:api/controller/urls_controller.js
 
 //get validate code
 exports.get_url = async function (req, res) {

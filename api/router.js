@@ -47,11 +47,19 @@ module.exports = function (app) {
 
 	// Urls Routes
 	app.route('/get')
+<<<<<<< HEAD
 		.post([authJwt.verifyToken, authJwt.isAdmin], urlsController.get_url);
 	app.route('/create')
 		.post(urlsController.create_url);
 	app.route('/create/vcode')
 		.post([authJwt.verifyToken, authJwt.isAdmin], urlsController.create_vcode);
+=======
+		.post(urlsController.get_url);
+	app.route('/create')
+		.post(urlsController.create_url);
+	app.route('/create/vcode')
+		.post(urlsController.create_vcode);
+>>>>>>> d71e3847edf3b32ad5637e785842617514c87927
 	app.route('/validate/vcode')
 		.post(urlsController.validate_vcode);
 
