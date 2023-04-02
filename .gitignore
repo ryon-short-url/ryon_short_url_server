@@ -104,3 +104,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# kei file
+key.js
+
