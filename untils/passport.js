@@ -1,6 +1,6 @@
 const passport = require("passport")
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
-const keys = require('./key');
+const keys = require('../untils/key');
 
 //Using google auth
 passport.serializeUser(function (user, done) {
