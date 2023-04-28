@@ -12,7 +12,7 @@ passport.deserializeUser(function (user, done) {
 passport.use(new GoogleStrategy({
     clientID: keys.googleClientID,
     clientSecret: keys.googleClientSecret,
-    callbackURL: "http://localhost:3005/auth/google/callback",
+    callbackURL: "https://ryon-server-ovm2v4omga-as.a.run.app/auth/google/callback",
     passReqToCallback: true
 },
     function (request, accessToken, refreshToken, profile, done) {
