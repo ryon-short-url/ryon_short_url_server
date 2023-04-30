@@ -5,7 +5,9 @@ module.exports = function (app) {
 	//innit
 	///////////////////////////////////////
 	var urlsController = require('./controllers/urls_controller'),
+		blogController = require('./controllers/blog_controller'),
 		Auth = require('./controllers/auth_controller'),
+
 		authJwt = require('../middlewares/authJwt');
 	const auth = new Auth();
 	const passport = require('passport');
@@ -55,4 +57,11 @@ module.exports = function (app) {
 	app.route('/validate/vcode')
 		.post(urlsController.validate_vcode);
 
+	// Blog Routes
+	app.route('/create/mappingblog')
+		.post(blogController.create_mapping_blog);
+	app.route('/get/mappingblog')
+		.post(blogController.get_mapping_blog);
+    app.route('/delete/mappingblog')
+		.post(blogController.delete_mapping_blog);
 };
