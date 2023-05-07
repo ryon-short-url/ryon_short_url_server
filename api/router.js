@@ -48,22 +48,24 @@ module.exports = function (app) {
 	});
 
 	// Urls Routes
+	// app.route('/get')
+	// 	.post([authJwt.verifyToken, authJwt.isAdmin], urlsController.get_url);
 	app.route('/get')
 		.post([authJwt.verifyToken, authJwt.isAdmin], urlsController.get_url);
 	app.route('/create')
 		.post(urlsController.create_url);
 	app.route('/create/vcode')
-		.post([authJwt.verifyToken, authJwt.isAdmin], urlsController.create_vcode);
+		.post(urlsController.create_vcode);
 	app.route('/validate/vcode')
 		.post(urlsController.validate_vcode);
 
-	// Blog Routes
-	app.route('/create/mappingblog')
-		.post(blogController.create_mapping_blog);
-	app.route('/get/mappingblog')
-		.post(blogController.get_mapping_blog);
-	app.route('/delete/mappingblog')
-		.post(blogController.delete_mapping_blog);
+	// // Blog Routes
+	// app.route('/create/mappingblog')
+	// 	.post(blogController.create_mapping_blog);
+	// app.route('/get/mappingblog')
+	// 	.post(blogController.get_mapping_blog);
+	// app.route('/delete/mappingblog')
+	// 	.post(blogController.delete_mapping_blog);
 	app.route('/get/posts')
 		.get(blogController.get_posts);
 
