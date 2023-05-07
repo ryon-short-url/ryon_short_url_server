@@ -5,6 +5,7 @@ hello = function () {
 // A variable
 const PI = 3.14;
 const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
 // A class!!
 var Rectangle = class {
     constructor(length, width) {
@@ -22,9 +23,29 @@ var Rectangle = class {
     }
 };
 
+var typelist = {
+    technology: 'technology',
+    culture: 'culture',
+    fashion: 'fashion',
+    lifestyle: 'lifestyle',
+    art: 'art',
+    cuisine: 'cuisine',
+    newlist: 'newlist'
+}
+
+
+
 var objectExport = {
     hello: hello,
     CHARACTERS: CHARACTERS,
     Rectangle: Rectangle,
+    technology: 'technology',
+    culture: 'culture',
+    fashion: 'fashion',
+    lifestyle: 'lifestyle',
+    art: 'art',
+    cuisine: 'cuisine',
+    newlist: 'newlist',
+    typelist: typelist
 }
 module.exports = objectExport;

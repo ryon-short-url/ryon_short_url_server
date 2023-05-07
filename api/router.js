@@ -62,6 +62,9 @@ module.exports = function (app) {
 		.post(blogController.create_mapping_blog);
 	app.route('/get/mappingblog')
 		.post(blogController.get_mapping_blog);
-    app.route('/delete/mappingblog')
+	app.route('/delete/mappingblog')
 		.post(blogController.delete_mapping_blog);
+	app.route('/get/posts')
+		.get(blogController.get_posts);
+
 };
