@@ -6,6 +6,7 @@ module.exports = function (app) {
 	///////////////////////////////////////
 	var urlsController = require('./controllers/urls_controller'),
 		blogController = require('./controllers/blog_controller'),
+		examController = require('./controllers/exam_controller'),
 		Auth = require('./controllers/auth_controller'),
 
 		authJwt = require('../middlewares/authJwt');
@@ -68,5 +69,13 @@ module.exports = function (app) {
 	// 	.post(blogController.delete_mapping_blog);
 	app.route('/get/posts')
 		.get(blogController.get_posts);
+
+	//Exam create
+	app.route('/create/exam')
+		.post(examController.create_exam);
+
+	//Exam post
+	app.route('/get/exam')
+		.post(examController.get_exam);
 
 };
