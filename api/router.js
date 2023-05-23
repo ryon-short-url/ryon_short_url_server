@@ -77,5 +77,9 @@ module.exports = function (app) {
 	//Exam post
 	app.route('/get/exam')
 		.post(examController.get_exam);
+	
+	//Exam post
+	app.route('/get/counterExam')
+		.get(examController.get_counter_exam);
 
 };

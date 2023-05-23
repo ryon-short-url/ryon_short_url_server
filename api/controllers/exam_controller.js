@@ -4,15 +4,6 @@ var utils = require("../../untils/utils");
 const { MongoClient } = require('mongodb');
 const MONGODB_URI = 'mongodb+srv://ryonlink:DMtpq8nsbfU1tXdt@ryon01.kswslff.mongodb.net/?retryWrites=true&w=majority';
 const client = new MongoClient(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-const { google } = require('googleapis');
-const key = require("../../untils/key");
-const CONSTANT = require("../../constant/constant");
-const blogger = google.blogger({
-    version: 'v3',
-    params: {
-        key: key.apiKey
-    }
-});
 
 
 
@@ -53,6 +44,17 @@ exports.get_exam = async function (req, res) {
     });
 };
 
+exports.get_counter_exam = async function (req, res) {
+    await getCounterExam(async (v) => {
+        if (v != 0) {
+            res.json(v);
+        }
+        else {
+            res.json("error");
+        }
+    });
+};
+
 ///////////////Fuction///////////////////////////////////////
 // create url
 const createExam = async (obj, callback) => {
@@ -80,6 +82,7 @@ const createExam = async (obj, callback) => {
     })
 }
 
+
 const getExam = async (obj, callback) => {
     await client.connect();
     const collection = client.db("ryon01").collection(obj.collection);
@@ -88,6 +91,28 @@ const getExam = async (obj, callback) => {
         if (result == null) {
             callback(0);
         } else {
+            callback(result);
+        }
+    });
+
+}
+
+
+const getCounterExam = async (callback) => {
+    await client.connect();
+    const counter_collection = client.db("ryon01").collection("countersid");
+    await counter_collection.find().toArray().then((result) => {
+        console.log(result)
+        if (result == null) {
+            callback(0);
+        } else {
+            // const resultMap = result.reduce((map, obj) => {
+            //     map.set(obj._id, obj);
+            //     return map;
+            // }, new Map());
+
+            // const jsonObject = JSON.stringify(Object.fromEntries(resultMap));
+            // console.log(jsonObject)
             callback(result);
         }
     });
