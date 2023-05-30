@@ -74,10 +74,14 @@ module.exports = function (app) {
 	app.route('/create/exam')
 		.post(examController.create_exam);
 
+	//Exam update
+	app.route('/update/exam')
+		.post(examController.update_exam);
+
 	//Exam post
 	app.route('/get/exam')
 		.post(examController.get_exam);
-	
+
 	//Exam post
 	app.route('/get/counterExam')
 		.get(examController.get_counter_exam);

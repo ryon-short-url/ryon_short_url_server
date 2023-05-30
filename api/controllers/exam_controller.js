@@ -1,10 +1,7 @@
 'use strict';
-
-var utils = require("../../untils/utils");
 const { MongoClient } = require('mongodb');
 const MONGODB_URI = 'mongodb+srv://ryonlink:DMtpq8nsbfU1tXdt@ryon01.kswslff.mongodb.net/?retryWrites=true&w=majority';
 const client = new MongoClient(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-
 
 
 exports.create_exam = async function (req, res) {
@@ -28,6 +25,23 @@ exports.create_exam = async function (req, res) {
     });
 };
 
+exports.update_exam = async function (req, res) {
+    var obj = {
+        content: req.body.content,
+        anwser: req.body.anwser,
+        explanation: req.body.explanation,
+        updateTime: new Date(),
+
+    }
+    await updateExam(req.body.id, obj, async (v) => {
+        if (v != 0) {
+            res.json(JSON.stringify(v));
+        }
+        else {
+            res.json("error");
+        }
+    });
+};
 exports.get_exam = async function (req, res) {
     var obj = {
         collection: req.body.collection,
@@ -61,25 +75,77 @@ const createExam = async (obj, callback) => {
 
     await client.connect();
     const counter_collection = client.db("ryon01").collection("countersid");
-    counter_collection.findOne({ _id: obj._id }, function (err, res) {
-        const exam_collection = client.db("ryon01").collection(obj._id.slice(0, 2));
-        obj._id = obj._id + formatNumber(res.counter)
-        exam_collection.insertOne(obj, function (err, res) {
-            if (err) {
-                callback(0);
-            } else {
-                console.log(obj._id)
-                counter_collection.findOneAndUpdate({ _id: obj._id.slice(0, 6) }, { $inc: { counter: 1 } }, function (err, status) {
+
+
+    counter_collection.findOne({ _id: obj._id }, async function (err, res) {
+        console.log(err)
+        console.log(res)
+        console.log(obj._id)
+
+        if (res == null) {
+            counter_collection.insertOne({ _id: obj._id, counter: 1 }, function (err, res) {
+                if (err) {
+                    callback(0);
+                }
+
+                obj._id = obj._id + formatNumber(1)
+                insertOneExam(obj, function (err, res) {
                     if (err) {
                         callback(0);
-                    } else {
-                        callback(res);
                     }
-                });
-
-            }
-        });
+                    callback(res);
+                })
+            });
+        } else {
+            obj._id = obj._id + formatNumber(res.counter)
+            insertOneExam(obj, function (err, res) {
+                if (err) {
+                    callback(0);
+                }
+                callback(res);
+            })
+        }
     })
+}
+
+const insertOneExam = async (obj, callback) => {
+    await client.connect();
+    const exam_collection = client.db("ryon01").collection(obj._id.slice(0, 2));
+    const counter_collection = client.db("ryon01").collection("countersid");
+    exam_collection.insertOne(obj, function (err, res) {
+        if (err) {
+            callback(0);
+        } else {
+            console.log(obj._id)
+            counter_collection.findOneAndUpdate({ _id: obj._id.slice(0, 6) }, { $inc: { counter: 1 } }, function (err, status) {
+                if (err) {
+                    callback(0);
+                } else {
+                    callback(res);
+                }
+            });
+
+        }
+    });
+
+}
+
+const updateExam = async (id, obj, callback) => {
+    await client.connect();
+    const collection = client.db("ryon01").collection(id.slice(0, 2));
+    const filter = { _id: id };
+    const update = {
+        $set: obj
+
+    };
+    await collection.updateOne(filter, update).then((result) => {
+        if (result == null) {
+            callback(0);
+        } else {
+            callback(result);
+        }
+    });
+
 }
 
 
