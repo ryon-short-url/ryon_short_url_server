@@ -7,6 +7,7 @@ module.exports = function (app) {
 	var urlsController = require('./controllers/urls_controller'),
 		blogController = require('./controllers/blog_controller'),
 		examController = require('./controllers/exam_controller'),
+		dictController = require('./controllers/dict_controller'),
 		Auth = require('./controllers/auth_controller'),
 
 		authJwt = require('../middlewares/authJwt');
@@ -85,5 +86,10 @@ module.exports = function (app) {
 	//Exam post
 	app.route('/get/counterExam')
 		.get(examController.get_counter_exam);
+
+
+	//Dict
+	app.route('/get/dict')
+		.post(dictController.get_dict);
 
 };
