@@ -6,6 +6,8 @@ hello = function () {
 const PI = 3.14;
 const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
+
+
 // A class!!
 var Rectangle = class {
     constructor(length, width) {
@@ -22,7 +24,7 @@ var Rectangle = class {
         console.log("Circuit: " + (2 * (this.length + this.width)))
     }
 };
-
+// type
 var typelist = {
     technology: 'technology',
     culture: 'culture',
@@ -33,6 +35,12 @@ var typelist = {
     newlist: 'newlist'
 }
 
+//mongodb collection
+
+var mongoDBContant = {
+    databaseName: 'ryon01',
+    dictjpvn: 'dictjpvn',
+}
 
 
 var objectExport = {
@@ -46,6 +54,7 @@ var objectExport = {
     art: 'art',
     cuisine: 'cuisine',
     newlist: 'newlist',
-    typelist: typelist
+    typelist: typelist,
+    mongoDBContant: mongoDBContant
 }
 module.exports = objectExport;

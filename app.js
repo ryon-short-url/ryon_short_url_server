@@ -10,7 +10,6 @@ app.use(cors());
 //                   **Start**                      //
 //////////////////////////////////////////////////////
 
-
 //Run Cron Job Start
 //require("./cron/cronjob")();// tạm thời tắt
 //Init router

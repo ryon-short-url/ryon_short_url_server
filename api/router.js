@@ -89,7 +89,16 @@ module.exports = function (app) {
 
 
 	//Dict
+	app.route('/create/dict')
+		.post(dictController.create_dict);
+	//Dict
 	app.route('/get/dict')
 		.post(dictController.get_dict);
+	//Dict
+	app.route('/update/dict')
+		.post(dictController.update_dict);
+	//Dict
+	app.route('/delete/dict')
+		.post(dictController.delete_dict);
 
 };
