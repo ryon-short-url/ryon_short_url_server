@@ -40,6 +40,7 @@ var typelist = {
 var mongoDBContant = {
     databaseName: 'ryon01',
     dictjpvn: 'dictjpvn',
+    userColection: 'user'
 }
 
 

@@ -33,12 +33,12 @@ module.exports = function (app) {
 		}
 		));
 
-	app.get('/auth/google/callback',
-		passport.authenticate('google', {
-			failureRedirect: '/failed',
-		}),
-		auth.googleSignin
-	);
+	// app.get('/auth/google/callback',
+	// 	passport.authenticate('google', {
+	// 		failureRedirect: '/failed',
+	// 	}),
+	// 	auth.googleSignin
+	// );
 	app.get("/failed", (req, res) => {
 		res.send("Failed")
 	});
@@ -54,6 +54,9 @@ module.exports = function (app) {
 	// 	.post([authJwt.verifyToken, authJwt.isAdmin], urlsController.get_url);
 	app.route('/get')
 		.post([authJwt.verifyToken, authJwt.isAdmin], urlsController.get_url);
+
+	app.route('/test')
+		.post([authJwt.verifyToken, authJwt.isAdmin], urlsController.test);
 	app.route('/create')
 		.post(urlsController.create_url);
 	app.route('/create/vcode')
@@ -87,7 +90,6 @@ module.exports = function (app) {
 	app.route('/get/counterExam')
 		.get(examController.get_counter_exam);
 
-
 	//Dict
 	app.route('/create/dict')
 		.post(dictController.create_dict);
@@ -100,5 +102,14 @@ module.exports = function (app) {
 	//Dict
 	app.route('/delete/dict')
 		.post(dictController.delete_dict);
+
+
+	// Đăng ký tài khoản với Google
+	app.route('/signin/google')
+		.post(auth.signinWithGoogle);
+
+	// Đăng ký tài khoản với Google
+	app.route('/login/google')
+		.post([authJwt.verifyToken], auth.loginWithGoogle);
 
 };

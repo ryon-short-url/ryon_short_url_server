@@ -12,6 +12,11 @@ exports.get_url = async function (req, res) {
     res.send(originalUrl.originalUrl);
 };
 
+exports.test = async function (req, res) {
+
+    res.send('test OK');
+};
+
 exports.create_url = async function (req, res) {
     var x = {
         _id: utils.generateMd5(req.body.originalUrl),

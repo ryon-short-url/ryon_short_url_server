@@ -18,6 +18,7 @@
     "crypto": "^1.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "google-auth-library": "^8.8.0",
     "googleapis": "^118.0.0",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^4.2.1",
