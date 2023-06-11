@@ -15,7 +15,6 @@ const { OAuth2Client } = require('google-auth-library');
 
 const client = new OAuth2Client(key.googleClientID);
 
-
 class Auth {
 
     signinWithGoogle = async (req, res) => {
@@ -58,45 +57,18 @@ class Auth {
                 }
             });
 
-
         } catch (error) {
             console.log(error);
             return res.status(401).send({ message: "Unauthorized!" });
             // ... Xử lý lỗi
         }
 
-
     };
-
-
 
     loginWithGoogle = (req, res) => {
 
         res.json(req.userInfo);
     };
-
-    // googleSignin = (isLoggedIn, (req, res) => {
-
-    //     var token = jwt.sign({ id: req.user.email }, key.secret, {
-    //         expiresIn: 86400 // 24 hours
-    //     });
-
-    //     res.status(200).send({
-    //         accessToken: token,
-    //         email: req.user.email
-    //     });
-    // });
-
-    // signin = (req, res) => {
-
-    //     var token = jwt.sign({ id: 'tiennv2' }, key.secret, {
-    //         expiresIn: 86400 // 24 hours
-    //     });
-
-    //     res.status(200).send({
-    //         accessToken: token
-    //     });
-    // };
 }
 const isLoggedIn = (req, res, next) => {
     if (req.user) {
