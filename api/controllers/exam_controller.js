@@ -10,11 +10,13 @@ exports.create_exam = async function (req, res) {
         content: req.body.content,
         anwser: req.body.anwser,
         explanation: req.body.explanation,
+        audioUrl: req.body.audioUrl,
         comments: null,
         createTime: new Date(),
         updateTime: null,
 
     }
+    console.log(obj);
     await createExam(obj, async (v) => {
         if (v != 0) {
             res.json(JSON.stringify(v));
