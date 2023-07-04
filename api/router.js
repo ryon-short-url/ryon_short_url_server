@@ -96,6 +96,8 @@ module.exports = function (app) {
 	//Dict
 	app.route('/get/dict')
 		.post(dictController.get_dict);
+	app.route('/get/dict/fulltextsearch')
+		.post(dictController.get_dict_with_full_search);
 	//Dict
 	app.route('/update/dict')
 		.post(dictController.update_dict);

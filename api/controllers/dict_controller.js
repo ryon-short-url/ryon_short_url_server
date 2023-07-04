@@ -57,6 +57,17 @@ exports.get_dict = async function (req, res) {
     });
 };
 
+exports.get_dict_with_full_search = async function (req, res) {
+    await getDictWithFullTextSearch(req.body._id, req.body.limit, async (v) => {
+        if (v != 0) {
+            res.json(v);
+        }
+        else {
+            res.json("error");
+        }
+    });
+};
+
 
 ///////////////Fuction///////////////////////////////////////
 // create url
@@ -113,6 +124,8 @@ const deleteDict = async (id, callback) => {
 }
 
 
+
+
 const getDict = async (obj, callback) => {
     await client.connect();
     const collection = client.
@@ -126,5 +139,159 @@ const getDict = async (obj, callback) => {
             callback(result);
         }
     });
+
+
+
+}
+const getDictWithFullTextSearch = async (obj, limit, callback) => {
+    await client.connect();
+    const collection = client.
+        db(mongoDBContant.mongoDBContant.databaseName).
+        collection(mongoDBContant.mongoDBContant.dictjpvn);
+
+    //const regex = new RegExp(`.*${obj}.*`, 'i');
+
+    const exactMatchRegex = new RegExp(`^${obj}$`, 'i');
+    const fuzzyMatchRegex = new RegExp(`${obj}`, 'i');
+    // const filter = { _id: obj };
+    // collection.find({ "_id": regex }).project({ _id: 1 }).limit(10).toArray()
+    //     .then((results) => {
+    //         // console.log(results);
+    //         callback(results);
+    //     })
+    //     .catch((error) => {
+    //         console.error(error);
+    //         callback(0);
+    //     });
+
+    // collection.aggregate([
+    //     {
+    //         $match: {
+    //             _id: fuzzyMatchRegex
+    //         }
+    //     },
+    //     {
+    //         $addFields: {
+    //             isExactMatch: {
+    //                 $regexMatch: {
+    //                     input: "$_id",
+    //                     regex: exactMatchRegex
+    //                 }
+    //             }
+    //         }
+    //     },
+    //     {
+    //         $sort: {
+    //             isExactMatch: -1
+    //         }
+    //     },
+    //     {
+    //         $limit: 10
+    //     },
+    //     {
+    //         $project: {
+    //             _id: 1,
+    //             // Các trường khác mà bạn muốn chỉ trả về
+    //         }
+    //     }
+    // ]).toArray()
+    //     .then((results) => {
+    //         // console.log(results);
+    //         callback(results);
+    //     })
+    //     .catch((error) => {
+    //         console.error(error);
+    //         callback(0);
+    //     });
+
+    // collection.aggregate([
+    //     {
+    //         $match: {
+    //             _id: fuzzyMatchRegex
+    //         }
+    //     },
+    //     {
+    //         $limit: 10
+    //     },
+    //     {
+    //         $project: {
+    //             _id: 1,
+    //             // Các trường khác mà bạn muốn chỉ trả về
+    //         }
+    //     }
+    // ]).project({ _id: 1 }) // Bổ sung project() cuối cùng để chỉ lấy trường _id
+    //     .toArray()
+    //     .then((results) => {
+    //         // console.log(results);
+    //         callback(results);
+    //     })
+    //     .catch((error) => {
+    //         console.error(error);
+    //         callback(0);
+    //     });
+
+
+    const agg = [
+        {
+            $search: {
+                text: {
+                    query: obj,
+                    path: '_id'
+                },
+            },
+        },
+        {
+            $limit: parseInt(limit),
+        },
+        // {
+        //     $project: {
+        //         _id: 1,
+
+        //     },
+        // },
+    ];
+
+    collection.aggregate(agg).toArray()
+        .then((results) => {
+            // console.log(results);
+            callback(results);
+        })
+        .catch((error) => {
+            console.error(error);
+            callback(0);
+        });
+
+    // collection.find(
+    //     { $text: { $search: obj } },
+    //     { score: { $meta: "textScore" } }
+    // )
+    //     .sort({ score: { $meta: "textScore" } })
+    //     .limit(10)
+    //     .toArray()
+    //     .then((results) => {
+    //         // console.log(results);
+    //         callback(results);
+    //     })
+    //     .catch((error) => {
+    //         console.error(error);
+    //         callback(0);
+    //     });
+
+    // collection.aggregate([
+    //     { $match: { $text: { $search: obj } } },
+    //     { $addFields: { adjustedScore: { $subtract: ["$score", 0.1] } } },
+    //     { $sort: { adjustedScore: -1 } }
+    // ])
+    //     .toArray()
+    //     .then((results) => {
+    //         // console.log(results);
+    //         callback(results);
+    //     })
+    //     .catch((error) => {
+    //         console.error(error);
+    //         callback(0);
+    //     });
+
+
 
 }
