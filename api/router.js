@@ -71,8 +71,8 @@ module.exports = function (app) {
 	// 	.post(blogController.get_mapping_blog);
 	// app.route('/delete/mappingblog')
 	// 	.post(blogController.delete_mapping_blog);
-	app.route('/get/posts')
-		.get(blogController.get_posts);
+	// app.route('/get/posts')
+	// 	.get(blogController.get_posts);
 
 	//Exam create
 	app.route('/create/exam')
@@ -105,11 +105,30 @@ module.exports = function (app) {
 	app.route('/delete/dict')
 		.post(dictController.delete_dict);
 
+	//////////////////////////////
+	//Blog
+	//////////////////////////////
+	app.route('/create/blog')
+		.post(blogController.create_blog);
+	//Blog
+	app.route('/get/blogall')
+		.get(blogController.get_blog_all);
 
+	app.route('/get/blogbyid')
+		.post(blogController.get_blog_by_id);
+	//Blog
+	app.route('/update/blog')
+		.post(blogController.update_blog);
+	//Blog
+	app.route('/delete/blog')
+		.post(blogController.delete_blog);
+
+	//////////////////////////////
+	//Google
+	//////////////////////////////
 	// Đăng ký tài khoản với Google
 	app.route('/signin/google')
 		.post(auth.signinWithGoogle);
-
 	// Đăng ký tài khoản với Google
 	app.route('/login/google')
 		.post([authJwt.verifyToken], auth.loginWithGoogle);
